@@ -6,24 +6,36 @@ bits 32
 ; edi - arg1
 ; edx - arg2
 _main:
-    cmp eax, 0
+    cmp eax, 0 ; _write
     je .eax0
 
-    cmp eax, 1
+    cmp eax, 1 ; _keypress
     je .eax1
 
-    cmp eax, 2
+    cmp eax, 2 ; _waitforkeypress
     je .eax2
 
+    cmp eax, 3 ; _printc
+    je .eax3
+
+    cmp eax, 4 ; _setcursor
+    je .eax4
+
     jmp .return
-.eax0: ; _write
+.eax0:
     call _write
     jmp .return
-.eax1: ; _keypress
+.eax1:
     call _keypress
     jmp .return
-.eax2: ; _waitforkeypress
+.eax2:
     call _waitforkeypress
+    jmp .return
+.eax3:
+    call _printc
+    jmp .return
+.eax4:
+    call _setcursor
     jmp .return
 .return:
     ret
@@ -63,9 +75,14 @@ _write:
 ;           eax - key pressed
 ;           cf - make/break
 _keypress:
+    mov eax, 0
+.wait:
+    in al, 0x64
+    test al, 1
+    jz .wait
     in al, 0x60
     test al, al
-    jz _keypress
+    jz .wait
     clc
     test al, 0x80
     jne .return
@@ -85,6 +102,41 @@ _waitforkeypress:
     cmp al, bl
     jne .wait
     pop ebx
+    ret
+
+; esi - character to be printed (1 byte)
+; edi - formatting (1 byte)
+_printc:
+    push eax
+    push ebx
+    push ecx
+    push esi
+    push edi
+    and esi, 0xff
+    and edi, 0xff
+    shl edi, 8
+    mov eax, esi
+    add eax, edi
+    mov ebx, 0xb8000
+    mov ecx, [cursor]
+    shl ecx, 1
+    mov [ebx + ecx], ax
+    shr ecx, 1
+    inc ecx
+    mov [cursor], ecx
+    pop edi
+    pop esi
+    pop ecx
+    pop ebx
+    pop eax
+    ret
+
+; esi - cursor
+; returns (for debugging) ->
+;                           eax - position of cursor in memory
+_setcursor:
+    mov [cursor], esi
+    mov eax, cursor
     ret
 
 cursor: dd 0
