@@ -1,4 +1,4 @@
-ASSEMBLY_SOURCES=src/boot.asm src/kernel.asm src/functions.asm
+ASSEMBLY_SOURCES=src/boot.asm src/kernel.asm
 ASSEMBLY_BINARIES=$(patsubst src/%.asm,build/%.bin,$(ASSEMBLY_SOURCES))
 
 IMAGE=build/OS.img
