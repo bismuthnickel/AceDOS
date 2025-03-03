@@ -8,11 +8,11 @@ PROGRAM_IMAGES=$(patsubst programs/build/%.bin,programs/build/%.img,$(PROGRAM_BI
 IMAGE=build/OS.img
 PROGRAM=helloworld
 
-.PHONY: all always test clean programs
+.PHONY: all always test clean cleanprograms programs
 
-all: always clean $(IMAGE) programs test
+all: always clean $(IMAGE) test
 
-programs: $(PROGRAM_BINARIES) $(PROGRAM_IMAGES)
+programs: always cleanprograms $(PROGRAM_BINARIES) $(PROGRAM_IMAGES)
 
 always:
 	@clear
@@ -38,6 +38,8 @@ $(IMAGE): build/OS.bin
 
 clean:
 	@rm -rf build/*
+
+cleanprograms:
 	@rm -rf programs/build/*
 
 test:
