@@ -38,6 +38,11 @@ _entry:
 
     mov word [0x7da0], _asi
 
+    mov di, 0x80
+    shl di, 2
+    mov word [di], _asi_interruptwrapper
+    mov word [di+2], 0
+
     mov ax, 21
     mov si, messages.a
     mov bh, 0x0a

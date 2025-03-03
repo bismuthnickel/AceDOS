@@ -16,6 +16,10 @@
     jmp .return
 %endmacro
 
+_asi_interruptwrapper:
+    call _asi
+    iret
+
 _asi:
     CMPJMP 0
     CMPJMP 1
@@ -28,18 +32,20 @@ _asi:
     CMPJMP 20
     CMPJMP 21
     CMPJMP 22
+    CMPJMP 23
     jmp .return
 LABEL 0, _legacy_putc, 1
 LABEL 1, _legacy_setformat, 1
 LABEL 2, _legacy_setcursor, 1
 LABEL 3, _getkeystroke, 0
 LABEL 4, _printhex, 1
-LABEL 5, _clearscreen, 1
+LABEL 5, _clearscreen, 0
 LABEL 8, _formatscreen, 1
 LABEL 10, _legacy_puts, 1
 LABEL 20, _putc, 0
 LABEL 21, _puts, 0
 LABEL 22, _setcursor, 0
+LABEL 23, _strcmp, 0
 .return:
     ret
 .legacy: db 1
@@ -181,8 +187,8 @@ _putc:
 .handlespecial:
     cmp bl, 0x0d
     je .newline
-    cmp bl, 0x08
-    je .backspace
+    ; cmp bl, 0x08
+    ; je .backspace
     cmp bl, 0
     je .return
     jmp .printable
@@ -267,3 +273,25 @@ _cursor_to_2d:
     mov ax, [.results]
     ret
 .results: dw 0
+
+; si - string1
+; di - string2
+; returns ->
+;           ax - equal if 0
+_strcmp:
+.loop:
+    mov al, [si]
+    mov ah, [di]
+    inc si
+    inc di
+    cmp al, ah
+    jne .notequal
+    cmp al, 0
+    je .endofstring
+    jmp .loop
+.endofstring:
+    xor ax, ax
+    ret
+.notequal:
+    mov ax, 1
+    ret
