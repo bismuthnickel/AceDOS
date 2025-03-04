@@ -18,7 +18,7 @@ jobs:
       run: sudo apt install nasm
 
     - name: Make programs
-      run: make programs
+      run: /bin/bash -p make programs
 
     - name: Make
-      run: make
+      run: /bin/bash -p make
