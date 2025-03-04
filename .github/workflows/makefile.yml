@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: debug
-      run: pwd
+      run: ls ../
     
     - name: Make programs
       run: make programs
