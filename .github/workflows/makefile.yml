@@ -1,0 +1,19 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: debian-latest
+
+    steps:
+    - name: Make programs
+      run: make programs
+
+    - name: Make images
+      run: make
