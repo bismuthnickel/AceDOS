@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: debug
+      run: pwd
+    
     - name: Make programs
       run: make programs
 
