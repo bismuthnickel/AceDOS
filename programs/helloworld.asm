@@ -18,5 +18,3 @@ main:
 
 helloworld: db "Hello! (FROM PROGRAM!)", 0x0d, 0
 relative: db "Introducing: RELATIVE ADDRESSING", 0x0d, 0
-
-times (512*8)-($-$$) db 0

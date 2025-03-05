@@ -102,7 +102,7 @@ _kernel:
     cmp byte [.loaded], 1
     je .alreadyloaded
     mov ah, 0x02
-    mov al, 8
+    mov al, 16
     mov ch, 0
     mov cl, 1
     mov dh, 0

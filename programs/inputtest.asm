@@ -12,6 +12,9 @@ main:
     mov bh, 0x07
     mov ax, 20
     int 0x80
+    mov bl, 0x0d
+    mov bh, 0x07
+    mov ax, 20
+    int 0x80
     ret
 
-times (512*8)-($-$$) db 0

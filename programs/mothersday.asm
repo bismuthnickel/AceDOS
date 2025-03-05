@@ -12,5 +12,3 @@ int 0x80
 ret
 
 message: db "i love my mom", 0x0d, 0
-
-times (512*8)-($-$$) db 0
