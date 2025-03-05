@@ -10,7 +10,7 @@ PROGRAM=helloworld
 
 .PHONY: all always test clean cleanprograms programs
 
-all: always clean $(IMAGE) test
+all: always clean $(IMAGE)
 
 programs: always cleanprograms $(PROGRAM_BINARIES) $(PROGRAM_IMAGES)
 
