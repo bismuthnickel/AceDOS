@@ -1,3 +1,6 @@
+; KERNEL
+; 3/2/25 Notoriginal
+
 org 0xa000
 bits 16
 
