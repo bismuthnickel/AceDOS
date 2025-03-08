@@ -33,6 +33,7 @@ _asi:
     CMPJMP 21
     CMPJMP 22
     CMPJMP 23
+    CMPJMP 24
     jmp .return
 LABEL 0, _legacy_putc, 1
 LABEL 1, _legacy_setformat, 1
@@ -46,6 +47,7 @@ LABEL 20, _putc, 0
 LABEL 21, _puts, 0
 LABEL 22, _setcursor, 0
 LABEL 23, _strcmp, 0
+LABEL 24, _cursor_to_2d, 0
 .return:
     ret
 .legacy: db 1
@@ -187,8 +189,8 @@ _putc:
 .handlespecial:
     cmp bl, 0x0d
     je .newline
-    ; cmp bl, 0x08
-    ; je .backspace
+    cmp bl, 0x08
+    je .backspace
     cmp bl, 0
     je .return
     jmp .printable

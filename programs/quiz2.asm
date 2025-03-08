@@ -1,5 +1,7 @@
 bits 16
 
+db 0x88
+
 call get_ip
 get_ip:
     pop bp
