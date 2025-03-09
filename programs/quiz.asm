@@ -13,7 +13,16 @@ mov ax, 21
 int 0x80
 mov ax, 3
 int 0x80
-cmp al, "4"
+mov cl, al
+mov bl, al
+mov bh, 0x07
+mov ax, 20
+int 0x80
+mov bl, 0x0d
+mov bh, 0
+mov ax, 20
+int 0x80
+cmp cl, "4"
 je correct
 lea si, [bp + m2]
 mov bh, 0x0c
