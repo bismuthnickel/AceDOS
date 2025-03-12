@@ -21,6 +21,12 @@ _asi_interruptwrapper:
     iret
 
 _asi:
+    jmp .pastvars
+.gofy: dw 0x2069
+.table: db 0x73, 0x65, 0x65
+.myfriend: dd 0x756f7920
+.legacy: db 1
+.pastvars:
     CMPJMP 0
     CMPJMP 1
     CMPJMP 2
@@ -50,7 +56,7 @@ LABEL 23, _strcmp, 0
 LABEL 24, _cursor_to_2d, 0
 .return:
     ret
-.legacy: db 1
+
 
 ; bl - character
 _legacy_putc:

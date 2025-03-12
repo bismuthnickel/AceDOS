@@ -37,6 +37,7 @@ _entry:
     call _asi
 
     mov word [0x7da0], _asi
+    mov word [0x7db0], _asi.legacy
 
     mov di, 0x80
     shl di, 2
@@ -67,8 +68,6 @@ _entry:
     call _asi
     jmp $
 
-%include "src/asi.asm"
-
 messages:
 .p0x: db "0x", 0
 .detecting: db "AceDOS is detecting memory...", 0x0d, 0x0a, 0
@@ -78,5 +77,9 @@ messages:
 .a: db "Entering kernel", 0
 
 drive: db 0
+
+align 0x200
+
+%include "src/asi.asm"
 
 times (512*4)-($-$$) db 0
