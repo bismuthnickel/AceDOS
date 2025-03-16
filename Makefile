@@ -8,16 +8,18 @@ PROGRAM_IMAGES=$(patsubst programs/build/%.bin,programs/build/%.img,$(PROGRAM_BI
 IMAGE=build/OS.img
 PROGRAM=helloworld
 
-.PHONY: all always test clean cleanprograms programs
+.PHONY: default all always test clean cleanprograms programs run getprograms
+
+default: test
 
 all: always clean $(IMAGE)
 
-programs: always cleanprograms $(PROGRAM_BINARIES) $(PROGRAM_IMAGES)
+programs: always cleanprograms $(PROGRAM_BINARIES) $(PROGRAM_IMAGES) getprograms
 
 always:
-	@clear
-	@mkdir -p build
-	@mkdir -p programs/build
+	clear
+	mkdir -p build
+	mkdir -p programs/build
 
 build/OS.bin: $(ASSEMBLY_BINARIES)
 	cat $^ > $@
@@ -28,6 +30,7 @@ build/%.bin: src/%.asm
 programs/build/%.img: programs/build/%.bin
 	cp $< $@
 	truncate -s 1440k $@
+	rm -f $<
 
 programs/build/%.bin: programs/%.asm
 	nasm -f bin $< -o $@
@@ -36,12 +39,17 @@ $(IMAGE): build/OS.bin
 	cp $< $@
 	truncate -s 1440k $@
 
-clean:
-	@rm -rf build/*
+clean: cleanprograms
+	rm -rf build/*
 
 cleanprograms:
-	@rm -rf programs/build/*
+	rm -rf programs/build/*
+	rm -f programs.txt
 
-test:
+test: all programs run
+
+run:
 	qemu-system-i386 -device sb16 -drive file=$(IMAGE),if=floppy,format=raw -drive file=programs/build/$(PROGRAM).img,if=floppy,format=raw -name AceDOS
-	@clear
+
+getprograms:
+	/usr/bin/env bash tools/getfiles.sh $(abspath programs) > programs.txt
