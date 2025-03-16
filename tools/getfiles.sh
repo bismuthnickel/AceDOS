@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Set the target directory
 target_dir="$1"
 
